@@ -1,18 +1,21 @@
-bzip2
-ca-certificates
-expat
-libcxx
-libffi
-ncurses
-openssl
-pip
-python
-readline
-setuptools
-sqlite
-tk
-tzdata
-wheel
-xz
-zlib
-python-dotenv
+# Core dependencies
+streamlit>=1.29.0
+python-dotenv>=1.0.0
+
+# LangChain and LLMs
+langchain>=0.1.0
+langchain-google-genai>=0.0.5
+langchain-anthropic>=0.0.6
+google-generativeai>=0.3.0
+
+# Vector store and embeddings
+faiss-cpu>=1.7.4
+sentence-transformers>=2.2.2
+
+# Web scraping and processing
+beautifulsoup4>=4.12.0
+requests>=2.31.0
+
+# Data handling
+numpy>=1.24.0
+pandas>=2.1.0
