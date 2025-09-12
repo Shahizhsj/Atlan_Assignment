@@ -37,7 +37,7 @@ class TicketClassifier:
         ]
         
         results = []
-        with ThreadPoolExecutor(max_workers=2) as executor:
+        with ThreadPoolExecutor(max_workers=1) as executor:
             futures = [executor.submit(self.classify_ticket, inp) for inp in inputs]
             for idx, future in enumerate(as_completed(futures)):
                 results.append(future.result())
