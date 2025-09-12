@@ -7,7 +7,7 @@ from typing import List, Dict, Any
 
 class TicketClassifier:
     def __init__(self, api_key: str):
-        self.llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", google_api_key=api_key)
+        self.llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash", google_api_key=api_key)
         self.classification_chain = self._create_chain()
 
     def _create_chain(self) -> LLMChain:
