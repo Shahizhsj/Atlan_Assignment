@@ -4,6 +4,17 @@ from dotenv import load_dotenv
 import time
 from ticket_classifer import TicketClassifier, load_tickets
 from ai_agent import SupportAgent, create_ticket_from_input
+from typing import Dict, Any, List, Tuple
+@st.cache_data(ttl=86400)  # Cache for 24 hours
+def classify_ticket_cached(_classifier, ticket_text: str) -> str:
+    """Cache the classification results based on ticket text only"""
+    return _classifier.classify_ticket({"ticket_text": ticket_text})
+
+@st.cache_data(ttl=86400)  # Cache for 24 hours
+def process_ticket_cached(_agent, ticket_text: str) -> Tuple[str, str, List[str]]:
+    """Cache the RAG responses based on ticket text only"""
+    ticket = create_ticket_from_input(ticket_text)
+    return _agent.process_ticket(ticket)
 
 class StreamlitUI:
     @staticmethod
@@ -143,10 +154,11 @@ def classification_tab(ui: StreamlitUI, api_key: str):
     
     with st.spinner('Processing tickets...'):
         progress_bar = st.progress(0)
-        results = classifier.process_tickets(
-            tickets, 
-            progress_callback=lambda p: progress_bar.progress(p)
-        )
+        results=[]
+        for idx, ticket in enumerate(tickets):
+            result = classify_ticket_cached(classifier, ticket["body"])
+            results.append(result)
+            progress_bar.progress((idx + 1) / len(tickets))
 
     # Store results in session state
     st.session_state.classification_results = list(zip(tickets, results))
@@ -186,7 +198,7 @@ def chatbot_tab(api_key: str):
             
             with st.spinner("Processing..."):
                 ticket = create_ticket_from_input(message)
-                classification, response, sources = st.session_state.agent.process_ticket(ticket)
+                classification, response, sources = process_ticket_cached(st.session_state.agent, message)
                 
                 # Format the classification result nicely
                 topic = classification.split('Topic: ')[1].split('\n')[0].strip()
