@@ -7,7 +7,7 @@ from typing import List, Dict, Any
 from langchain_openai import OpenAI
 class TicketClassifier:
     def __init__(self, api_key: str):
-         self.llm = OpenAI(
+        self.llm = OpenAI(
             model="gpt-3.5-turbo",
             temperature=0.3,
             openai_api_key=api_key
