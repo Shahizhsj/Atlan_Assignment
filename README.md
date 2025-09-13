@@ -125,7 +125,7 @@ conda activate atlan-classifier
 
 3. Set up environment variables in `.env`:
 ```plaintext
-GOOGLE_API_KEY=your_google_api_key_here
+OPENAI_API_KEY=your_openai_api_key_here
 ```
 
 4. Initialize FAISS vector store:
