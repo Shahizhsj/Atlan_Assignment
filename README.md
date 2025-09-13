@@ -75,10 +75,6 @@ graph LR
     LC --> OAI
     FE --> VS
     JSON --> PY
-    
-    style Frontend fill:#b5e48c
-    style Backend fill:#ff9f1c
-    style Storage fill:#2ec4b6
 ```
 
 ## Cool Features I've Built
