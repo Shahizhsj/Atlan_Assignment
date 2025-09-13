@@ -4,10 +4,14 @@ from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import List, Dict, Any
-
+from langchain_openai import OpenAI
 class TicketClassifier:
     def __init__(self, api_key: str):
-        self.llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash", google_api_key=api_key)
+         self.llm = OpenAI(
+            model="gpt-3.5-turbo",
+            temperature=0.3,
+            openai_api_key=api_key
+        )
         self.classification_chain = self._create_chain()
 
     def _create_chain(self) -> LLMChain:
