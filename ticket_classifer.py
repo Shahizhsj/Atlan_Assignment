@@ -4,10 +4,10 @@ from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import List, Dict, Any
-from langchain_openai import OpenAI
+from langchain_openai import ChatOpenAI
 class TicketClassifier:
     def __init__(self, api_key: str):
-        self.llm = OpenAI(
+        self.llm = ChatOpenAI(
             model="gpt-3.5-turbo",
             temperature=0.3,
             openai_api_key=api_key
