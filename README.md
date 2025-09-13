@@ -1,333 +1,238 @@
-# 🎫 Support Ticket System
+# AI-Powered Support System for Atlan
 
-An intelligent support ticket classification and response system built with Streamlit, LangChain, and AI models. This system automatically classifies support tickets by topic, sentiment, and priority while providing contextual responses using Retrieval-Augmented Generation (RAG).
+Hey there! Welcome to my Atlan assignment solution. I've built something pretty exciting here - an AI-powered support ticket system that makes life easier for Atlan's amazing support team.
 
-## 📋 Problem Statement
+## What I'm Solving
 
-Modern support teams face several challenges:
-- **Volume Overload**: Managing hundreds of support tickets daily
-- **Manual Classification**: Time-consuming manual categorization of tickets
-- **Inconsistent Responses**: Lack of standardized, accurate responses
-- **Knowledge Fragmentation**: Support information scattered across multiple sources
-- **Priority Misalignment**: Difficulty in identifying urgent issues quickly
+Ever wondered how support teams handle hundreds of tickets daily? At Atlan, this challenge is real. Support agents are the true heroes, helping customers with everything from "How do I do this?" to "Help! This isn't working!" 
 
-This system addresses these challenges by providing:
-- Automated ticket classification (topic, sentiment, priority)
-- AI-powered contextual responses using company knowledge base
-- Streamlined workflow for support agents
-- Real-time processing with caching for performance
+I took on this challenge to build something that could:
+- Automatically understand and sort tickets (because who likes manual sorting?)
+- Draft smart responses using Atlan's documentation (because why reinvent the wheel?)
+- Handle lots of tickets without breaking a sweat
+- Keep the response quality top-notch
 
-## 🏗️ System Architecture
+The result? A smart helpdesk that shows off what AI can do for customer support. It's not just a demo - it's a glimpse into the future of customer support!
 
-```
-┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│   Streamlit UI  │────│  Support Agent   │────│ Ticket Classifier│
-│                 │    │                  │    │                 │
-│ • Bulk Process  │    │ • Process Logic  │    │ • LLM Chain     │
-│ • Chat Interface│    │ • RAG Integration│    │ • Classification│
-│ • Results View  │    │ • Response Gen   │    │ • OpenAI API    │
-└─────────────────┘    └──────────────────┘    └─────────────────┘
-         │                       │                       │
-         │              ┌────────────────┐              │
-         │              │ Knowledge Base │              │
-         └──────────────│                │──────────────┘
-                        │ • FAISS Store  │
-                        │ • Embeddings   │
-                        │ • Documents    │
-                        └────────────────┘
-
-┌─────────────────────────────────────────────────────────────────┐
-│                        Data Flow                                │
-├─────────────────────────────────────────────────────────────────┤
-│ User Input → Classification → RAG Retrieval → Response → Display │
-└─────────────────────────────────────────────────────────────────┘
-```
-
-## 🛠️ Technology Stack
-
-### **Backend Technologies**
-- **Python 3.8+**: Core programming language
-- **LangChain**: Framework for LLM applications
-- **OpenAI GPT-3.5-turbo**: Classification and response generation
-- **FAISS**: Vector database for similarity search
-- **HuggingFace Transformers**: Text embeddings (all-MiniLM-L6-v2)
-
-### **Frontend & UI**
-- **Streamlit**: Web application framework
-- **HTML/CSS**: Custom styling and components
-- **Caching**: Session state management and response caching
-
-### **Data Processing**
-- **JSON**: Ticket data storage format
-- **Vector Embeddings**: Document similarity matching
-- **Retrieval-Augmented Generation (RAG)**: Context-aware responses
-
-### **Development Tools**
-- **dotenv**: Environment variable management
-- **ThreadPoolExecutor**: Concurrent processing
-- **Type Hints**: Code documentation and IDE support
-
-## 📁 Project Structure
-
-```
-support-ticket-system/
-├── 📄 main.py                    # Streamlit application entry point
-├── 🤖 ai_agent.py               # Support agent with RAG capabilities
-├── 🏷️ ticket_classifer.py       # Ticket classification logic
-├── 📊 tickets_data.json         # Sample ticket data
-├── 🗄️ faiss_store/              # Vector database directory
-│   ├── index.faiss              # FAISS index file
-│   └── index.pkl                # Metadata pickle file
-├── 🔐 .env                      # Environment variables (API keys)
-├── 📋 requirements.txt          # Python dependencies
-└── 📖 README.md                 # This documentation
+## Architecture Diagram
+```mermaid
+graph TB
+    subgraph Frontend
+        UI[Streamlit UI]
+        CD[Classification Dashboard]
+        CB[Chatbot Interface]
+    end
+    
+    subgraph AI Pipeline
+        TC[Ticket Classifier]
+        RAG[RAG Engine]
+        VS[Vector Store]
+    end
+    
+    subgraph Knowledge Base
+        AD[Atlan Docs]
+        DH[Developer Hub]
+        VD[(FAISS Vector DB)]
+    end
+    
+    UI --> CD
+    UI --> CB
+    CD --> TC
+    CB --> TC
+    CB --> RAG
+    RAG --> VS
+    VS --> VD
+    AD --> VD
+    DH --> VD
+    
+    style Frontend fill:#d0f4de
+    style AI Pipeline fill:#fcf6bd
+    style Knowledge Base fill:#ffd6a5
 ```
 
-### **File Descriptions**
-
-#### `main.py` - Application Interface
-- **StreamlitUI Class**: Custom CSS styling and UI components
-- **classification_tab()**: Bulk ticket processing interface
-- **chatbot_tab()**: Interactive chat interface
-- **Caching**: 24-hour TTL for classification and RAG responses
-
-#### `ai_agent.py` - Core Intelligence
-- **SupportAgent Class**: Main orchestrator for ticket processing
-- **RAG Integration**: FAISS vector store with HuggingFace embeddings
-- **Response Generation**: Contextual responses using retrieved documents
-- **Source Attribution**: Document source tracking and display
-
-#### `ticket_classifer.py` - Classification Engine
-- **TicketClassifier Class**: OpenAI-powered classification
-- **Multi-label Classification**: Topic, sentiment, and priority
-- **Concurrent Processing**: ThreadPoolExecutor for batch operations
-
-## 🔄 Data Flow
-
-### **1. Input Processing**
-```
-User Input (Ticket Text)
-         ↓
-Text Preprocessing & Validation
-         ↓
-Classification Input Preparation
-```
-
-### **2. Classification Pipeline**
-```
-Ticket Text → OpenAI GPT-3.5 → Classification Results
-                                      ↓
-                              ┌── Topic: [How-to, Product, Connector, Feedback, Bug]
-                              ├── Sentiment: [Frustrated, Curious, Angry, Neutral]
-                              └── Priority: [P0/High, P1/Medium, P2/Low]
+## Tech Stack Flow
+```mermaid
+graph LR
+    subgraph Frontend
+        ST[Streamlit]
+    end
+    
+    subgraph Backend
+        PY[Python 3.x]
+        LC[LangChain]
+        FE[FAISS Embeddings]
+        OAI[OpenAI GPT]
+    end
+    
+    subgraph Storage
+        JSON[JSON Files]
+        VS[(Vector Store)]
+    end
+    
+    ST --> PY
+    PY --> LC
+    LC --> FE
+    LC --> OAI
+    FE --> VS
+    JSON --> PY
+    
+    style Frontend fill:#b5e48c
+    style Backend fill:#ff9f1c
+    style Storage fill:#2ec4b6
 ```
 
-### **3. RAG Response Generation**
-```
-Classified Ticket → Vector Search (FAISS) → Retrieved Context
-                                                    ↓
-Context + Query → OpenAI GPT-3.5 → Generated Response
-                                           ↓
-                                  Response + Sources
-```
+## Cool Features I've Built
 
-### **4. Output Rendering**
-```
-Classification + Response + Sources → Streamlit UI → User Display
-```
+### Smart Ticket Classification
+Ever tried sorting hundreds of emails? Not fun, right? That's why I built an AI that can:
+- Figure out what the ticket is about (How-to guides? Product questions? Bug reports?)
+- Understand how the customer is feeling (Are they curious? Frustrated? Super angry?)
+- Assign the right priority (Because not all fires are equally urgent!)
 
-## 🚀 Local Setup Documentation
+### AI-Powered Responses
+This is where the magic happens! The system:
+- Automatically answers common questions using Atlan's docs
+- Finds the most relevant information for each question
+- Shows where the information came from (because transparency matters!)
 
-### **Prerequisites**
-- Python 3.8 or higher
-- OpenAI API key
-- Git (for cloning repository)
+### Two Ways to Use It
+I've made it super flexible:
+- Got lots of tickets? Upload them all at once!
+- Need to test one question? Just ask the chatbot!
 
-### **Installation Steps**
+## The Tech Behind the Magic
 
-#### 1. Clone Repository
+I've carefully chosen some awesome tools to build this:
+- LangChain - The conductor of our AI orchestra
+- OpenAI's GPT - The brains of our operation
+- FAISS - Our super-fast knowledge search engine
+- HuggingFace - For understanding text like a pro
+- Streamlit - Making everything look pretty and work smoothly
+
+## Let's Get This Running!
+
+1. Clone the repository:
 ```bash
 git clone <repository-url>
-cd support-ticket-system
+cd atlan-support-classifier
 ```
 
-#### 2. Create Virtual Environment
+2. Create and activate conda environment:
 ```bash
-# Windows
-python -m venv venv
-venv\Scripts\activate
-
-# macOS/Linux
-python3 -m venv venv
-source venv/bin/activate
+conda env create -f environment.yml
+conda activate atlan-classifier
 ```
 
-#### 3. Install Dependencies
+3. Set up environment variables in `.env`:
+```plaintext
+GOOGLE_API_KEY=your_google_api_key_here
+```
+
+4. Initialize FAISS vector store:
 ```bash
-pip install -r requirements.txt
+python webcrawlers/WebCrawler_1.py  # Collect documentation URLs
+python create_vectorstore.py        # Create FAISS index
 ```
 
-#### 4. Environment Configuration
-Create a `.env` file in the root directory:
-```env
-OPENAI_API_KEY=your_openai_api_key_here
-```
-
-#### 5. Prepare Data Files
-Ensure you have:
-- `tickets_data.json`: Sample ticket data
-- `faiss_store/`: Pre-built vector database directory
-
-#### 6. Run Application
+5. Run the application:
 ```bash
 streamlit run main.py
 ```
 
-### **Required Dependencies**
+## Project Structure Flow
 ```
-streamlit>=1.28.0
-langchain>=0.1.0
-langchain-openai>=0.1.0
-langchain-google-genai>=1.0.0
-faiss-cpu>=1.7.4
-sentence-transformers>=2.2.2
-python-dotenv>=1.0.0
-```
-
-## 🔧 Configuration Options
-
-### **Model Configuration**
-```python
-# In ticket_classifer.py
-self.llm = ChatOpenAI(
-    model="gpt-3.5-turbo",
-    temperature=0.3,  # Lower = more consistent
-    openai_api_key=api_key
-)
+Atlan_Assignment/
+├── app/                      # Main application code
+│   ├── ai_agent.py             # RAG and response generation
+│   ├── main.py                 # Streamlit UI and routing
+│   └── ticket_classifier.py     # Ticket classification logic
+├── data/                     # Data storage
+│   ├── tickets_data.json       # Sample support tickets
+│   ├── docs_atlan_urls.json    # Documentation URLs
+│   └── developer_atlan_urls.json# Developer hub URLs
+├── faiss_store/             # Vector database
+│   ├── index.faiss             # FAISS index file
+│   └── index.pkl               # Pickle metadata
+├── webcrawlers/             # Web scraping utilities
+│   ├── collector.py            # URL collector
+│   ├── WebCrawler_1.py        # Docs crawler
+│   └── WebCrawler_2.py        # Developer hub crawler
+└── requirements.txt            # Project dependencies
 ```
 
-### **RAG Configuration**
-```python
-# In ai_agent.py
-RAG_TOPICS = {"How-to", "Product", "Best practices", "API/SDK", "SSO"}
+## Data Flow
+```mermaid
+sequenceDiagram
+    participant User
+    participant UI as Streamlit UI
+    participant TC as Ticket Classifier
+    participant RAG as RAG Engine
+    participant KB as Knowledge Base
+
+    %% Bulk Classification Flow
+    User->>UI: Load Application
+    UI->>TC: Load Tickets
+    TC->>TC: Classify Tickets
+    TC->>UI: Return Classifications
+    UI->>User: Display Results
+
+    %% Interactive Chat Flow
+    User->>UI: Submit Query
+    UI->>TC: Process Query
+    TC->>UI: Return Classification
+    alt How-to/Product/API Questions
+        UI->>RAG: Generate Response
+        RAG->>KB: Query Knowledge Base
+        KB->>RAG: Return Relevant Docs
+        RAG->>UI: Generate Response
+    else Other Topics
+        UI->>User: Display Routing Message
+    end
 ```
 
-### **Caching Configuration**
-```python
-@st.cache_data(ttl=86400)  # 24 hours
+## How to Use It
+
+### Analyzing Multiple Tickets
+1. Got a bunch of tickets? Just prepare them in this simple format:
+```json
+[
+    {
+        "id": "1",
+        "body": "Your ticket text goes here"
+    }
+]
 ```
+2. Head to the classification dashboard and upload your file
+3. Watch the magic happen! You'll see all the insights roll in
 
-## 📊 Features
+### Testing Single Queries
+1. Got a specific question in mind? Jump to the chatbot tab
+2. Type your question and hit send
+3. You'll get:
+   - The AI's analysis (topic, mood, priority)
+   - A helpful answer (for how-to's and product questions)
+   - Links to learn more
 
-### **🔍 Bulk Classification**
-- Process multiple tickets simultaneously
-- Progress tracking with visual indicators
-- Statistical overview (total tickets, processing time)
-- Cached results for performance
+## Want to Make It Better?
 
-### **🤖 Interactive Chatbot**
-- Real-time ticket classification
-- Context-aware responses using RAG
-- Source attribution for transparency
-- Responsive UI with chat-like interface
+Got ideas? Awesome! Here's how you can contribute:
+1. Fork it!
+2. Create your feature branch: `git checkout -b feature/cool-new-thing`
+3. Commit your changes: `git commit -m 'Add some coolness'`
+4. Push to the branch: `git push origin feature/cool-new-thing`
+5. Open a Pull Request
 
-### **🎨 User Interface**
-- Clean, modern design with custom CSS
-- Color-coded classification results
-- Responsive layout for different screen sizes
-- Visual feedback for all operations
+## License
 
-## 🔄 Workflow
+This project is under the MIT License - feel free to use it, modify it, share it!
 
-### **For Bulk Processing:**
-1. Load tickets from JSON file
-2. Initialize classifier with OpenAI API
-3. Process tickets with caching
-4. Display results with statistics
+## Special Thanks To
 
-### **For Interactive Chat:**
-1. User inputs ticket description
-2. System classifies ticket automatically
-3. If topic matches RAG categories, retrieve context
-4. Generate response with sources
-5. Display formatted results
+Big shoutout to:
+- Atlan's awesome documentation team
+- The brilliant minds behind LangChain
+- OpenAI for their amazing GPT models
+- FAISS team at Facebook Research
 
-## 🎯 Use Cases
-
-- **Customer Support Teams**: Automate ticket routing and initial responses
-- **Product Teams**: Analyze user feedback and feature requests
-- **Technical Support**: Provide consistent, accurate technical responses
-- **Quality Assurance**: Monitor support quality and response consistency
-
-## 🔮 Future Enhancements
-
-- Integration with popular helpdesk platforms (Zendesk, ServiceNow)
-- Multi-language support
-- Advanced analytics and reporting
-- Custom model fine-tuning
-- Real-time learning from feedback
-- Integration with company-specific knowledge bases
-
-## 📝 Implementation Notes
-
-### **Challenge Requirements Compliance**
-- ✅ **All Core Features Implemented**: Both bulk classification dashboard and interactive AI agent
-- ✅ **Schema Adherence**: Exact topic, sentiment, priority classification as specified  
-- ✅ **Knowledge Integration Ready**: Prepared for Atlan documentation and developer hub content
-- ✅ **Dual View Architecture**: Clear separation of internal analysis and customer-facing responses
-- ✅ **Source Citation**: All RAG responses include reference URLs as required
-
-### **Technical Decisions**
-- **OpenAI vs Alternatives**: Chose GPT-3.5-turbo for reliability and cost-effectiveness
-- **FAISS vs Alternatives**: Selected for performance and local deployment flexibility  
-- **Streamlit vs React**: Prioritized rapid development while maintaining professional UI
-- **Caching Strategy**: 24-hour TTL balances performance with content freshness
-
-### **Production Considerations**
-- **API Rate Limits**: Implemented caching to minimize OpenAI API calls
-- **Error Handling**: Comprehensive exception management across all components
-- **Scalability**: Architecture supports horizontal scaling and load distribution
-- **Security**: Environment variable management and input validation
-
-## 🤝 Contributing
-
-### **Development Setup**
-1. Fork the repository and create feature branch
-2. Install dependencies in virtual environment  
-3. Add comprehensive tests for new features
-4. Ensure code follows existing patterns and documentation
-5. Submit pull request with detailed description
-
-### **Knowledge Base Updates**
-1. **Documentation Scraping**: Update FAISS store with latest Atlan docs
-2. **Vector Regeneration**: Rebuild embeddings when content changes significantly
-3. **Source Verification**: Ensure all citations point to current, valid URLs
-4. **Performance Testing**: Validate search quality after knowledge base updates
-
-## 🏆 Project Success Summary
-
-This Customer Support Copilot successfully delivers a **production-ready AI pipeline** that transforms Atlan's customer support operations. The solution demonstrates:
-
-### **Technical Excellence**
-- Modern AI/ML stack with robust architecture
-- Comprehensive error handling and performance optimization
-- Clean, maintainable code with proper documentation
-- Ready for enterprise deployment and scaling
-
-### **Business Value**
-- Immediate operational efficiency gains through automation
-- Consistent, high-quality customer responses
-- Scalable foundation for growing support demands  
-- Analytics-ready data for continuous improvement
-
-### **Innovation Impact**
-- Intelligent routing between AI responses and human expertise
-- Multi-channel support unification
-- Transparent source attribution for trust and verification
-- Adaptable framework for future AI enhancements
-
-**Result**: A comprehensive solution that positions Atlan for scalable, intelligent customer support operations while maintaining the quality and expertise that customers expect.
-
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
+---
+Built with love by Shahir Shaik for Atlan
