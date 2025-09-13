@@ -6,6 +6,7 @@ from langchain.chains import RetrievalQA
 from dotenv import load_dotenv
 from typing import Dict, Any, Tuple, List
 import os 
+
 class SupportAgent:
     RAG_TOPICS = {"How-to", "Product", "Best practices", "API/SDK", "SSO"}
     
