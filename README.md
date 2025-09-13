@@ -99,7 +99,7 @@ I've made it super flexible:
 ## The Tech Behind the Magic
 
 I've carefully chosen some awesome tools to build this:
-- **LangChain** – Orchestrates interactions between models, tools, and data sources  
+- **LangChain** – Coordinates models, tools, and data sources to enable seamless interactions.
 - **OpenAI GPT** – Powers advanced natural language understanding and generation  
 - **FAISS** – Provides fast and scalable similarity search across embeddings  
 - **HuggingFace** – Supplies state-of-the-art NLP models for text processing  
