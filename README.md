@@ -99,11 +99,11 @@ I've made it super flexible:
 ## The Tech Behind the Magic
 
 I've carefully chosen some awesome tools to build this:
-- LangChain - The conductor of our AI orchestra
-- OpenAI's GPT - The brains of our operation
-- FAISS - Our super-fast knowledge search engine
-- HuggingFace - For understanding text like a pro
-- Streamlit - Making everything look pretty and work smoothly
+- **LangChain** – Orchestrates interactions between models, tools, and data sources  
+- **OpenAI GPT** – Powers advanced natural language understanding and generation  
+- **FAISS** – Provides fast and scalable similarity search across embeddings  
+- **HuggingFace** – Supplies state-of-the-art NLP models for text processing  
+- **Streamlit** – Builds an interactive and user-friendly interface for deployment  
 
 ## Let's Get This Running!
 
