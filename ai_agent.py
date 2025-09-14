@@ -12,7 +12,11 @@ class SupportAgent:
     
     def __init__(self, api_key: str):
         self.classifier = TicketClassifier(api_key)
-        self.embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+        self.embeddings = HuggingFaceEmbeddings(
+            model_name="all-MiniLM-L6-v2",
+            model_kwargs={'device': 'cpu'},
+            encode_kwargs={'device': 'cpu', 'batch_size': 32}
+        )
         self.vectorstore = FAISS.load_local("faiss_store", self.embeddings, 
                                           allow_dangerous_deserialization=True)
         self.retriever = self.vectorstore.as_retriever()
